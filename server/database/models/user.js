@@ -1,22 +1,23 @@
-const { DataTypes } = require('sequelize');
+const { Model, DataTypes } = require("sequelize");
 
-module.exports = (sequelize) => {
-  const User = sequelize.define(
-    "User",
-    {
-      uuid: DataTypes.STRING,
-      name: DataTypes.STRING,
-      email: DataTypes.STRING,
-      active: DataTypes.BOOLEAN,
-      password: DataTypes.STRING,
-    },
-    {}
-  );
-  
-  User.associate = function (models) {
+class User extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        name: DataTypes.STRING,
+        email: DataTypes.STRING,
+        active: DataTypes.BOOLEAN,
+        password: DataTypes.STRING,
+      },
+      {
+        sequelize
+      }
+    );
+  }
+
+  static associate(models) {
     // associations can be defined here
-  };
-
-  return User;
+  }
 }
 
+module.exports = User;

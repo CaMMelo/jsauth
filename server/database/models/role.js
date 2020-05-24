@@ -1,19 +1,21 @@
-const { DataTypes } = require('sequelize');
+const { Model, DataTypes } = require("sequelize");
 
-module.exports = (sequelize) => {
-  const Role = sequelize.define(
-    "Role",
-    {
-      name: DataTypes.STRING,
-      active: DataTypes.BOOLEAN,
-    },
-    {}
-  );
-  
-  Role.associate = function (models) {
-    // associations can be defined here
-  };
+class Role extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        name: DataTypes.STRING,
+        active: DataTypes.BOOLEAN,
+      },
+      {
+        sequelize
+      }
+    );
+  }
 
-  return Role;
+  static associate(models) {
+    // define associations
+  }
 }
 
+module.exports = Role;

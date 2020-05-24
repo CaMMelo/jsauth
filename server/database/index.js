@@ -10,7 +10,8 @@ const load_models = (sequelize) => {
   let models = [];
   fs.readdirSync(dir).forEach((file) => {
     file = path.join(dir, file);
-    model = require(file)(sequelize);
+    model = require(file);
+    model.init(sequelize);
     models.push(model);
   });
 
@@ -20,7 +21,7 @@ const load_models = (sequelize) => {
 };
 
 module.exports = () => {
-  if(!sequelize) {
+  if (!sequelize) {
     sequelize = new Sequelize(dbConfig);
     load_models(sequelize);
   }
