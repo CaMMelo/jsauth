@@ -24,7 +24,7 @@ module.exports = (login) => {
         });
       }
       const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: 300,
+        expiresIn: parseInt(process.env.JWT_EXPRIRES),
       });
       resolve(token);
     } else {

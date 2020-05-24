@@ -2,7 +2,20 @@ const Role = require("../database/models/role");
 
 module.exports = (roles) => {
   return (req, res, next) => {
-    // this function will check if the authenticated user have some
-    // of the necessary roles
-  }
-}
+    const { user } = req;
+    if (!req.user) {
+      return res.status(403).send("unauthorized.");
+    }
+
+    const has = user.roles
+      .filter((role) => role.active)
+      .map((role) => role.name)
+      .some((role) => roles.includes(role));
+
+    if (!has) {
+      return res.status(403).send("permission denied.");
+    }
+
+    return next();
+  };
+};

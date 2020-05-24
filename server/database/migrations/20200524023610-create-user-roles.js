@@ -8,13 +8,21 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true,
-        references: { model: "users", key: "id" }
+        references: { model: "users", key: "id" },
       },
       role_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
-        references: { model: "roles", key: "id" }
+        references: { model: "roles", key: "id" },
+      },
+      created_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
       },
     });
   },
