@@ -8,13 +8,17 @@ class Role extends Model {
         active: DataTypes.BOOLEAN,
       },
       {
-        sequelize
+        sequelize,
       }
     );
   }
 
   static associate(models) {
-    // define associations
+    this.belongsToMany(models.User, {
+      through: "user_roles",
+      foreignKey: "role_id",
+      as: "users",
+    });
   }
 }
 

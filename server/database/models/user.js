@@ -10,13 +10,17 @@ class User extends Model {
         password: DataTypes.STRING,
       },
       {
-        sequelize
+        sequelize,
       }
     );
   }
 
   static associate(models) {
-    // associations can be defined here
+    this.belongsToMany(models.Role, {
+      through: "user_roles",
+      foreignKey: "user_id",
+      as: "roles",
+    });
   }
 }
 

@@ -1,20 +1,17 @@
 const express = require("express");
-const app = express();
+const RequestHandler = require("../../utils/request_handler");
 const CreateUser = require("./service/create_user");
+const app = express();
 
 app.use(express.json());
 
-app.post("/", async (req, res) => {
-  const { name, email, password } = req.body;
-  return CreateUser({ name, email, password }).then(
-    (result) => {
-      return res.send(result);
-    },
-    ({ status, errors }) => {
-      return res.status(status).send(errors);
-    }
-  );
-});
+app.post(
+  "/",
+  RequestHandler((req) => {
+    const { name, email, password } = req.body;
+    return CreateUser({ name, email, password });
+  })
+);
 
 module.exports = (parent) => {
   parent.use("/users", app);

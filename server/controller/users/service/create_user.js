@@ -1,4 +1,4 @@
-const SignUpModel = require("../model/sign_up");
+const SignUpModel = require("./model/sign_up");
 const User = require("../../../database/models/user");
 
 const dbModelMapping = new (require("./mapping/db_model"))();
