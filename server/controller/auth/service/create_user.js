@@ -1,18 +1,18 @@
 const SignUpModel = require("./model/sign_up");
-const User = require("../../../database/models/user");
+
 
 const dbModelMapping = new (require("./mapping/db_model"))();
-const inputValidator = new (require("./validator/input"))();
+const inputValidator = new (require("./validation/input"))();
 
 module.exports = async (user) => {
   const input = new SignUpModel(user);
   const { valid, errors } = await input.accept(inputValidator);
   return new Promise(async (resolve, reject) => {
     if (valid) {
-      let user = await input.accept(dbModelMapping);
-      return resolve(await User.create(user));
+      const user = await input.accept(dbModelMapping);
+      return resolve(user);
     } else {
-      reject({
+      return reject({
         status: 400,
         errors,
       });

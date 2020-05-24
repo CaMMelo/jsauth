@@ -3,7 +3,7 @@ const Role = require("../database/models/role");
 module.exports = (roles) => {
   return (req, res, next) => {
     const { user } = req;
-    if (!req.user) {
+    if (!req.user || !req.user.active) {
       return res.status(403).send("unauthorized.");
     }
 
