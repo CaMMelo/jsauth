@@ -2,23 +2,20 @@ const uuid = require("uuid");
 const bcrypt = require("bcrypt");
 const User = require("../../../database/models/user");
 
-const SignUpModel = require("./model/sign_up");
-
 const Validator = new (require("./validation/input"))();
 
 module.exports = (user) => {
-  const input = new SignUpModel(user);
   return new Promise((resolve, reject) => {
-    input
+    user
       .accept(Validator)
-      .then(async (res) => {
+      .then(async () => {
         const id = uuid.v4();
-        const password = await bcrypt.hash(input.password, 10);
+        const password = await bcrypt.hash(user.password, 10);
         const user = await User.create({
           id,
           password,
-          name: input.name,
-          email: input.email,
+          name: user.name,
+          email: user.email,
         });
         return resolve(user);
       })

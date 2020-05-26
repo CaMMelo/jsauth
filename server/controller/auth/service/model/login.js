@@ -3,8 +3,8 @@ module.exports = function ({ email, password }) {
   this.password = password;
 
   this.accept = (visitor) => {
-    if(visitor.visitLogInModel) {
+    if (visitor.visitLogInModel) {
       return visitor.visitLogInModel(this);
     }
-  }
+  };
 };

@@ -1,14 +1,12 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const LoginModel = require("./model/login");
 const User = require("../../../database/models/user");
 const Validator = new (require("./validation/input"))();
 
 module.exports = (login) => {
-  const input = new LoginModel(login);
   return new Promise((resolve, reject) => {
-    input
+    login
       .accept(Validator)
       .then(async () => {
         const user = await User.findOne({ where: { email: login.email } });

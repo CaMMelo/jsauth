@@ -17,7 +17,7 @@ module.exports = function () {
           errors.push("invalid email.");
         }
         const user = await User.findOne({ where: { email: model.email } });
-        if(user) {
+        if (user) {
           errors.push("email must be unique.");
         }
       }
