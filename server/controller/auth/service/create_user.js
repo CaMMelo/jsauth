@@ -1,21 +1,32 @@
+const uuid = require("uuid");
+const bcrypt = require("bcrypt");
+const User = require("../../../database/models/user");
+
 const SignUpModel = require("./model/sign_up");
 
+const Validator = new (require("./validation/input"))();
 
-const dbModelMapping = new (require("./mapping/db_model"))();
-const inputValidator = new (require("./validation/input"))();
-
-module.exports = async (user) => {
+module.exports = (user) => {
   const input = new SignUpModel(user);
-  const { valid, errors } = await input.accept(inputValidator);
-  return new Promise(async (resolve, reject) => {
-    if (valid) {
-      const user = await input.accept(dbModelMapping);
-      return resolve(user);
-    } else {
-      return reject({
-        status: 400,
-        errors,
+  return new Promise((resolve, reject) => {
+    input
+      .accept(Validator)
+      .then(async (res) => {
+        const id = uuid.v4();
+        const password = await bcrypt.hash(input.password, 10);
+        const user = await User.create({
+          id,
+          password,
+          name: input.name,
+          email: input.email,
+        });
+        return resolve(user);
+      })
+      .catch((errors) => {
+        reject({
+          status: 400,
+          errors,
+        });
       });
-    }
   });
 };
