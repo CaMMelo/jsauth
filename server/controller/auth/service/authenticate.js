@@ -2,7 +2,7 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../../../database/models/user");
-const Validator = new (require("./validation/input"))();
+const Validator = require("./validation/input");
 
 module.exports = (login) => {
   return new Promise((resolve, reject) => {

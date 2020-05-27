@@ -2,7 +2,7 @@ const uuid = require("uuid");
 const bcrypt = require("bcrypt");
 const User = require("../../../database/models/user");
 
-const Validator = new (require("./validation/input"))();
+const Validator = require("./validation/input");
 
 module.exports = (user) => {
   return new Promise((resolve, reject) => {
