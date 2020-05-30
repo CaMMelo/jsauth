@@ -11,18 +11,18 @@ app.use(Authenticated, Protected(["ADMIN"]));
 
 app.patch(
   "/activate",
-  RequestHandler((req) => {
-    const { ids } = req.body;
-    return Activate(ids);
-  })
+  // RequestHandler((req) => {
+  //   const { ids } = req.body;
+  //   return Activate(ids);
+  // })
 );
 
 app.patch(
   "/deactivate",
-  RequestHandler((req) => {
-    const { ids } = req.body;
-    return Deactivate(ids);
-  })
+  // RequestHandler((req) => {
+  //   const { ids } = req.body;
+  //   return Deactivate(ids);
+  // })
 );
 
 module.exports = (parent) => {

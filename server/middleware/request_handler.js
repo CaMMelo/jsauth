@@ -1,45 +1,39 @@
-const ArgumentBuilder = (req, arguments) => {
-  return new Promise(async (resolve, reject) => {
-    const errors = [];
-    const args = {};
-    for (let field in arguments) {
-      for (let argument in arguments[field]) {
-        await arguments[field][argument](req[field]).then(
-          (result) => {
-            args[argument] = result;
-          },
-          (err) => {
-            errors.push(...err);
-          }
-        );
-      }
-    }
-    if (errors.length === 0) {
-      resolve(args);
-    } else {
-      reject(errors);
-    }
-  });
+const TypeCast = (typename, obj) => {
+  return {
+    boolean: Boolean.bind(null, obj),
+    number: Number.bind(null, obj),
+    string: String.bind(null, obj),
+    symbol: Symbol.bind(null, obj),
+  }[typename]();
 };
 
-module.exports = (callback, args) => {
+const Traverse = (obj, schema) => {
+  const args = [];
+
+  for (const key in schema) {
+    if (typeof schema[key] === "function") {
+      args.push(new schema[key](obj[key]));
+    } else if (typeof schema[key] === "object") {
+      args.push(...Traverse(obj[key], schema[key]));
+    } else if (typeof schema[key] === "string") {
+      console.log(schema[key]);
+      args.push(TypeCast(schema[key], obj[key]));
+    }
+  }
+
+  return args;
+};
+
+module.exports = (callback, schema) => {
   return async (req, res) => {
-    return await ArgumentBuilder(req, args)
-      .then(
-        (arguments) => {
-          return callback(arguments);
-        },
-        (errors) => {
-          res.status(400).send(errors);
-        }
-      )
-      .then(
-        (result) => {
-          return res.send(result);
-        },
-        ({ status, errors }) => {
-          res.status(status).send(errors);
-        }
-      );
+    const args = Traverse(req, schema);
+    callback(req, ...args).then(
+      (result) => {
+        res.send(result);
+      },
+      ({ status, errors }) => {
+        res.status(status).send(errors);
+      }
+    );
   };
 };

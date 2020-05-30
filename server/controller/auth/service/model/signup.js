@@ -1,18 +1,24 @@
 const { email_regex } = require("../../../../utils/regex");
+const User = require("../../../../database/models/user");
 const {
   NotNull,
   MinLength,
   Matches,
   Unique,
 } = require("../../../../validation/constraints");
-const Validator = require("../../../../validation/constraints/validator");
-const User = require("../../../../database/models/user");
+const Schema = require("../../../../validation/schema");
 
-const constraints = {
-  name: [NotNull],
-  email: [NotNull, Matches(email_regex), Unique(User, "email")],
-  password: [NotNull, MinLength(6)],
-};
-
-module.exports = ({ name, email, password }) =>
-  Validator({ name, email, password }, constraints);
+module.exports = Schema({
+  name: {
+    type: "string",
+    constraints: [NotNull],
+  },
+  email: {
+    type: "string",
+    constraints: [NotNull, Matches(email_regex), Unique(User, "email")],
+  },
+  password: {
+    type: "string",
+    constraints: [NotNull, MinLength(6)],
+  },
+});
