@@ -1,6 +1,6 @@
 const RequestHandler = require("../../../middleware/request_handler");
 const User = require("../../../database/models/user");
-const SignUpModel = require("./model/signup");
+const SignUpSchema = require("./schema/signup");
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
 
@@ -19,5 +19,5 @@ const SignUp = (req, input) => {
 };
 
 module.exports = RequestHandler(SignUp, {
-  body: SignUpModel,
+  body: SignUpSchema,
 });

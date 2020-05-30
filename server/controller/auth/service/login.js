@@ -1,9 +1,11 @@
 require("dotenv").config();
+const RequestHandler = require("../../../middleware/request_handler");
+const User = require("../../../database/models/user");
+const LoginSchema = require("./schema/login");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../../../database/models/user");
 
-module.exports = (login) => {
+const Login = (req, login) => {
   return new Promise(async (resolve, reject) => {
     const user = await User.findOne({ where: { email: login.email } });
 
@@ -29,3 +31,8 @@ module.exports = (login) => {
     resolve(token);
   });
 };
+
+
+module.exports = RequestHandler(Login, {
+  body: LoginSchema,
+});

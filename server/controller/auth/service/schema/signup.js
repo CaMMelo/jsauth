@@ -1,12 +1,12 @@
 const { email_regex } = require("../../../../utils/regex");
 const User = require("../../../../database/models/user");
+const Schema = require("../../../../validation/schema");
 const {
   NotNull,
   MinLength,
   Matches,
   Unique,
 } = require("../../../../validation/constraints");
-const Schema = require("../../../../validation/schema");
 
 module.exports = Schema({
   name: {
